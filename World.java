@@ -14,22 +14,22 @@ import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class World extends JPanel{
+public class World extends JPanel {
     private final static int numParticles = 100;
   
     public Particle[] particles;
 	
-    public World(Particle[] particles){
+    public World(Particle[] particles) {
         this.particles = particles.clone();
     }
 
-    public World(){
+    public World() {
         this.particles = new Particle[numParticles];
     }
 	
     private Image image = null;
 	
-    public void paint(Graphics g){
+    public void paint(Graphics g) {
         int width  = getSize().width;
         int height = getSize().height;
       
@@ -54,7 +54,7 @@ public class World extends JPanel{
       this.update();
 	}
 
-	public void update(){
+	public void update() {
       for (int i=0; i<particles.length; i++){
           particles[i].update(0.25);
       }
@@ -90,11 +90,11 @@ public class World extends JPanel{
       this.repaint();
 	}
 
-	public void addAllParticles(Particle[] p){
+	public void addAllParticles(Particle[] p) {
       this.particles = p;
 	}
 	
-	public static void main(String[] args){
+	public static void main(String[] args) {
       java.awt.EventQueue.invokeLater(new Runnable() {
           public void run() {
               World world = new World();
