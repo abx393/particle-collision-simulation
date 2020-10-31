@@ -10,13 +10,6 @@
  * If so, the particle's velocity is adjusted accordingly.
  */
 
-/*
- * Works cited:
- * A small portion of the code for the particle class was taken from 
- * Princeton University CS Professor Robert Sedgewick's Particle.java code, namely the bounceOff() method.
- * Other than that, all other code was written by me.
- */
-
 import java.awt.*;
 import java.util.Random;
 
@@ -25,11 +18,13 @@ import javax.swing.JPanel;
 
 public class World extends JPanel{
 	private final static int numParticles = 100;
+  
 	public Particle[] particles;
 	
 	public World(Particle[] particles){
 		this.particles = particles.clone();
 	}
+
 	public World(){
 		this.particles = new Particle[numParticles];
 	}
@@ -37,7 +32,6 @@ public class World extends JPanel{
 	private Image image = null;
 	
 	public void paint(Graphics g){
-		
 		int width  = getSize().width;
 		int height = getSize().height;
 		
@@ -63,8 +57,8 @@ public class World extends JPanel{
 		g.drawImage(image, 0, 0, null);
 		
 		this.update();
-		
 	}
+
 	public void update(){
 		for (int i=0; i<particles.length; i++){
 			particles[i].update(0.25);
@@ -141,10 +135,8 @@ public class World extends JPanel{
 class Particle {
 	private World world;
 	private Graphics g2;
-	private double x;
-	private double y;
-	private double dx;
-	private double dy;
+	private double x, y;
+	private double dx, dy;
 	private double size;
 	private final double density;
 	private final double mass;
@@ -160,23 +152,22 @@ class Particle {
 		this.size = size;
 		dx = Math.random()*4-2;
 		dy = Math.random()*4-2;
-		this.density = density;//new Random().nextInt(200)
-				;
-		this.mass = size* density
-				;
+		this.density = density; // new Random().nextInt(200)
+		this.mass = size* density;
 		element = new String[] {"H","O", "He", "N"}[new Random().nextInt(4)];
 	}
-	 public Particle() {
-	        x     = Math.random() * world.getWidth();
-	        y     = Math.random() * world.getHeight();
-	        dx     = Math.random()*4 -2;
-	        dy     = Math.random() * 4 - 2;
-	        size = 20;
-	        this.density = 0.8;
-	        this.mass = size*density;
-	        //mass   = 0.5;
-	        //color  = Color.BLACK;
-	    }
+
+	public Particle() {
+        x = Math.random() * world.getWidth();
+        y = Math.random() * world.getHeight();
+        dx = Math.random()*4 -2;
+        dy = Math.random() * 4 - 2;
+        size = 20;
+        this.density = 0.8;
+        this.mass = size*density;
+    }
+
+    // Given a graphics object, draws and renders this particle
 	public void paint(Graphics g){
 		Color c = g.getColor();
 		g.setColor(Color.white);
@@ -189,34 +180,34 @@ class Particle {
 
 	}
 	
-	public void update(double dt){
-		if (this.x-this.size/2<=0){
-			this.x = this.size/2;
-			dx *=-1;
-		}
-		else if (this.x+this.size/2>=world.getWidth()){
-			this.x = world.getWidth()-this.size/2;
-			dx *= -1;
-		} else if (this.y -this.size/2<= 0){
-			this.y = this.size/2;
-			dy*=-1;
-		} else if ( this.y+this.size/2 >= world.getHeight()) {
-			this.y = this.world.getHeight()-this.size/2;
-			dy*=-1;
-		}
-		
-		x+= dx *dt
-				;
-		y+= dy * dt
-				;
-		paint(world.getGraphics());
-	}
-	public int count(){
-		return count;
-	}
+    // Updates the (x, y) position of this particle
+    public void update(double dt){
+        if (this.x - this.size / 2 <= 0){
+            this.x = this.size / 2;
+            dx *= -1;
+        } else if (this.x + this.size / 2 >= world.getWidth()){
+            this.x = world.getWidth()-this.size/2;
+            dx *= -1;
+        } else if (this.y - this.size / 2 <= 0){
+            this.y = this.size / 2;
+            dy *= -1;
+        } else if (this.y + this.size / 2 >= world.getHeight()) {
+            this.y = this.world.getHeight() - this.size / 2;
+            dy *= -1;
+        }
+        
+        x+= dx * dt;
+        y+= dy * dt;
 
+        paint(world.getGraphics());
+    }
+
+    public int count(){
+        return this.count;
+    }
+
+    // Updates the (x, y) position of two particles that collide
     public void bounceOff(Particle that) {
-    	
         double dx  = that.x - this.x;
         double dy  = that.y - this.y;
         double ddx = that.dx - this.dx;
@@ -232,7 +223,7 @@ class Particle {
         double fy = magnitude * dy / dist;
 
         // update velocities according to normal force
-        this.dx += 1 * fx / this.getMass();
+        this.dx += 1.00 * fx / this.getMass();
         this.dy += 1.00 * fy / this.getMass();
         that.dx -= 1.00 * fx / that.getMass();
         that.dy -= 1.00 * fy / that.getMass();
@@ -241,66 +232,70 @@ class Particle {
         this.count++;
         that.count++;
     }
-    /**
-     * Updates the velocity of this particle upon collision with a vertical wall.
-     */
+
+    // Updates the velocity of this particle upon collision with a vertical wall.
     public void bounceOffVerticalWall() {
-        dx *=-1;
+        this.dx *= -1;
         count++;
     }
 
-    /**
-     * Updates the velocity of this particle upon collision with a horizontal wall.
-     */
+    // Updates the velocity of this particle upon collision with a horizontal wall.
     public void bounceOffHorizontalWall() {
-        dy *=-1;
+        this.dy *= -1;
         count++;
     }
 
-    /**
-     * Returns the kinetic energy of this particle.
-     * The kinetic energy is given by the formula E = 1/2 mv^2
-     */
+    // Returns the kinetic energy of this particle.
+    // Kinetic energy is given by the formula E = 1/2 mv^2
     public double kineticEnergy() {
-        return 0.5 * mass * (dx*dx + dy*dy);
+        return 0.5 * this.mass * (this.dx * this.dx + this.dy * this.dy);
     }
-	public double getX(){
-		return x;
-	}
-	public double getY(){
-		return y;
-	}
-	public double getDX(){
-		return dx;
-	}
-	public double getDY(){
-		return dy;
-	}
-	public void setDX(double dx){
-		this.dx = dx;
-	}
-	public void setDY(double dy){
-		this.dy = dy;
-	}
-	public double getSize(){
-		return this.size;
-	}
-	public double getMass(){
-		return mass;
-	}
-	public void setX(double x){
-		this.x = x;
-		//paint(g2);
-	}
-	public void setY(double y){
-		this.y = y;
-		//paint(g2);
-	}
-	public void setSize(double size){
-		this.size = size;
-	}
-	public void setWorld(World w){
-		this.world = w;
-	}
-}
+    
+    public double getX(){
+        return this.x;
+    }
+    
+    public double getY(){
+        return this.y;
+    }
 
+    public double getDX(){
+        return this.dx;
+    }
+    
+    public double getDY(){
+        return this.dy;
+    }
+    
+    public void setDX(double dx){
+        this.dx = dx;
+    }
+    
+    public void setDY(double dy){
+        this.dy = dy;
+    }
+    
+    public double getSize(){
+        return this.size;
+    }
+    
+    public double getMass(){
+        return this.mass;
+    }
+
+    public void setX(double x){
+        this.x = x;
+    }
+
+    public void setY(double y){
+        this.y = y;
+    }
+
+    public void setSize(double size){
+        this.size = size;
+    }
+
+    public void setWorld(World w){
+        this.world = w;
+    }
+}
