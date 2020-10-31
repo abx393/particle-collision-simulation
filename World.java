@@ -96,23 +96,23 @@ public class World extends JPanel{
 	
 	public static void main(String[] args){
       java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-            	 World world = new World();
+          public void run() {
+              World world = new World();
      	        JFrame frame = new JFrame();
      	        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-     			frame.setSize((int) (d.getWidth()+10),(int) (d.getHeight()-40)
-     					);
-    			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    			frame.setTitle("Particle Collision Simulation");
-    			frame.setVisible(true);
-    			world.setSize(300000, 99999);
-    			world.setVisible(true);
+              frame.setSize((int) (d.getWidth()+10),(int) (d.getHeight()-40));
+              frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+              frame.setTitle("Particle Collision Simulation");
+              frame.setVisible(true);
+              world.setSize(300000, 99999);
+              world.setVisible(true);
     			
-    			world.setBackground(Color.black);
-       	        // create n random particles
+              world.setBackground(Color.black);
+
+              // create n random particles
     	        int k = 0;
     	       
-    	        for (int i=1; i<=numParticles; i++){        		
+    	        for (int i = 1; i <= numParticles; i++) {        		
     	        	int x = (int) (Math.random() * frame.getWidth());//(int) (50+i*frame.getWidth()/15.0+ Math.random()*50-25);
     	        	int y = (int) (Math.random()*frame.getHeight());//(int) (50 + j*frame.getHeight()/15.0 + Math.random()*50-25);
     	       		world.particles[k] = new Particle(x, y, 
@@ -120,7 +120,7 @@ public class World extends JPanel{
     	       		k++;
     	        }
     	        
-    			frame.add(world);
+              frame.add(world);
                 
             }
         });

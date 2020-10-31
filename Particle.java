@@ -35,14 +35,14 @@ public class Particle {
 
     // Given a graphics object, draws and renders this particle
 	public void paint(Graphics g){
-		Color c = g.getColor();
-		g.setColor(Color.white);
+      Color c = g.getColor();
+      g.setColor(Color.white);
 
-		g.fillOval((int)(x-this.getSize()/2), (int)(y-this.getSize()/2), (int) size, (int) size);
-		//g.setColor(Color.white);
-		//g.drawString(element,(int) (x+size/2),(int) (y+size/3*2));
-		g.setColor(c);
-		//update();
+      g.fillOval((int)(x-this.getSize()/2), (int)(y-this.getSize()/2), (int) size, (int) size);
+      //g.setColor(Color.white);
+      //g.drawString(element,(int) (x+size/2),(int) (y+size/3*2));
+      g.setColor(c);
+      //update();
 
 	}
 	
