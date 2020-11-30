@@ -31,11 +31,11 @@ public class World extends JPanel {
 	    // Fill image background and spin through objects in the world to draw them over the  background
 	    image.getGraphics().fillRect(0, 0, getWidth(), getHeight());
 	    
-	    for (Particle p : this.particles) {
+	    for (Particle particle : this.particles) {
 	    	Graphics g2 = image.getGraphics();
 	    	Random r = new Random();
 	    	g2.setColor(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
-			p.paint(g2);
+			particle.paint(g2);
 		}
 	    
 		g.drawImage(image, 0, 0, null);
@@ -50,31 +50,30 @@ public class World extends JPanel {
 		
 		for (int i = 0; i < particles.length; i++) {
 			for (int j = 0; j < particles.length; j++) {
-				
-				if (i == j) continue;
-				Particle PI = particles[i];
-				Particle PJ = particles[j];
-				Point p1 = new Point((int) PI.getX(), (int) PI.getY());
-				Point p2 = new Point((int) PJ.getX(), (int) PJ.getY());
-				//System.out.println("p1=" + p1 + "\np2=" + p2);
-				Point center1 = new Point ((int) (p1.getX() + PI.getSize() / 2.0), (int) (p1.getY() + PI.getSize() / 2.0));
-				Point center2 = new Point ((int) (p2.getX() + PJ.getSize() / 2.0), (int) (p2.getY() + PJ.getSize() / 2.0));
+                if (i != j) {
+                    Particle PI = particles[i];
+                    Particle PJ = particles[j];
+                    Point p1 = new Point((int) PI.getX(), (int) PI.getY());
+                    Point p2 = new Point((int) PJ.getX(), (int) PJ.getY());
+                    //System.out.println("p1=" + p1 + "\np2=" + p2);
+                    Point center1 = new Point ((int) (p1.getX() + PI.getSize() / 2.0), (int) (p1.getY() + PI.getSize() / 2.0));
+                    Point center2 = new Point ((int) (p2.getX() + PJ.getSize() / 2.0), (int) (p2.getY() + PJ.getSize() / 2.0));
 
-				//System.out.println("c1=" + center1 + "\nc2" + center2);
-				double dist = p1.distance(p2);
-				
-				if (dist < PI.getSize() / 2.0 + PJ.getSize() / 2.0) {
-					double dx = p2.getX() - p1.getX();
-					double dy = p2.getY() - p1.getY();
-					
-					//double angle = Math.asin(dx/p1.distance(p2));
-					double addDist = PI.getSize() / 2 + PJ.getSize() / 2 - dist;
-					
-					PJ.setX(PJ.getX() + dx / dist * addDist);
-					PJ.setY(PJ.getY() + dy / dist * addDist);
-				
-					PI.bounceOff(PJ);
-				}
+                    //System.out.println("c1=" + center1 + "\nc2" + center2);
+                    double dist = p1.distance(p2);
+                    
+                    if (dist < PI.getSize() / 2.0 + PJ.getSize() / 2.0) {
+                        double dx = p2.getX() - p1.getX();
+                        double dy = p2.getY() - p1.getY();
+                        
+                        //double angle = Math.asin(dx/p1.distance(p2));
+                        double addDist = PI.getSize() / 2 + PJ.getSize() / 2 - dist;
+                        
+                        PJ.setX(PJ.getX() + dx / dist * addDist);
+                        PJ.setY(PJ.getY() + dy / dist * addDist);
+                        PI.bounceOff(PJ);
+                    }
+                }
 			}
 		}
 		this.repaint();

@@ -46,10 +46,7 @@ public class Particle {
                    (int) (y - this.getSize() / 2),
                    (int) size,
                    (int) size);
-		//g.setColor(Color.white);
-		//g.drawString(element,(int) (x+size/2),(int) (y+size/3*2));
 		g.setColor(c);
-		//update();
 
 	}
 	
@@ -80,6 +77,13 @@ public class Particle {
 		return this.collisionCount;
 	}
 
+    public boolean isColliding(Particle other) {
+        double dx = Math.abs(this.x - other.x);
+        double dy = Math.abs(this.y - other.y);
+
+        return Math.sqrt(dx * dx + dy * dy) < this.size / 2 + other.size / 2;
+    }
+
 	// Returns the time it would take for this particle to hit the given particle
 	public double timeToHit(Particle that) {
 		if (this == that) return Double.POSITIVE_INFINITY;
@@ -95,7 +99,6 @@ public class Particle {
         double sigma = this.size + that.getSize();
         double d = (dvdr * dvdr) - dvdv * (drdr - sigma * sigma);
 
-        // if (drdr < sigma*sigma) StdOut.println("overlapping particles");
         if (d < 0) return Double.POSITIVE_INFINITY;
         return -(dvdr + Math.sqrt(d)) / dvdv;
 	}
@@ -128,7 +131,9 @@ public class Particle {
         double ddx = that.dx - this.dx;
         double ddy = that.dy - this.dy;
         double dvdr = dx*ddx + dy*ddy; // dv dot dr
-        double dist = this.size / 2.0 + that.size / 2.0; // Distance between particle centers at collison
+
+        // Distance between particle centers at collison
+        double dist = this.size / 2.0 + that.size / 2.0; 
 
         // Magnitude of normal force
         double magnitude = 2 * this.mass * that.mass * dvdr / ((this.mass + that.mass) * dist);
@@ -143,7 +148,7 @@ public class Particle {
         that.dx -= fx / that.getMass();
         that.dy -= fy / that.getMass();
 
-        // update collision counts
+        // Update collision counts
         this.collisionCount++;
         that.collisionCount++;
     }
