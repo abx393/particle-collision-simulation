@@ -17,7 +17,7 @@ public class Particle {
 	private int collisionCount;
 	private String element;
 	
-	public Particle(double x, double y, double size, double density, World world){
+	public Particle(double x, double y, double size, double density, World world) {
 		this.world = world;
 		g2 = (Graphics2D) world.getGraphics();
 		this.x = x;
@@ -31,20 +31,21 @@ public class Particle {
 	}
 
 	public Particle(World world) {
-		this(
-			Math.random() * world.getWidth(), 
-			Math.random() * world.getHeight(),
-			20.0,
-			0.8,
-			world
-		);
+		this(Math.random() * world.getWidth(), 
+             Math.random() * world.getHeight(),
+			 20.0,
+			 0.8,
+			 world);
 	}
 
 	public void paint(Graphics g) {
 		Color c = g.getColor();
 		g.setColor(Color.white);
 
-		g.fillOval((int)(x-this.getSize()/2), (int)(y-this.getSize()/2), (int) size, (int) size);
+		g.fillOval((int) (x - this.getSize() / 2),
+                   (int) (y - this.getSize() / 2),
+                   (int) size,
+                   (int) size);
 		//g.setColor(Color.white);
 		//g.drawString(element,(int) (x+size/2),(int) (y+size/3*2));
 		g.setColor(c);
@@ -75,12 +76,12 @@ public class Particle {
 	
 	// Returns the number of collisions this particle has had thus far with any of the four walls
 	// or with other particles
-	public int collisionCount(){
+	public int collisionCount() {
 		return this.collisionCount;
 	}
 
 	// Returns the time it would take for this particle to hit the given particle
-	public double timeToHit(Particle that){
+	public double timeToHit(Particle that) {
 		if (this == that) return Double.POSITIVE_INFINITY;
         double dx  = that.x - this.x;
         double dy  = that.y - this.y;
@@ -126,17 +127,17 @@ public class Particle {
         double dy  = that.y - this.y;
         double ddx = that.dx - this.dx;
         double ddy = that.dy - this.dy;
-        double dvdr = dx*ddx + dy*ddy;             // dv dot dr
-        double dist = this.size/2.0 + that.size/2.0;   // distance between particle centers at collison
+        double dvdr = dx*ddx + dy*ddy; // dv dot dr
+        double dist = this.size / 2.0 + that.size / 2.0; // Distance between particle centers at collison
 
-        // magnitude of normal force
-        double magnitude = 2*this.mass * that.mass * dvdr / ((this.mass + that.mass) * dist);
+        // Magnitude of normal force
+        double magnitude = 2 * this.mass * that.mass * dvdr / ((this.mass + that.mass) * dist);
 
-        // normal force, and in x and y directions
+        // Normal force, and in x and y directions
         double fx = magnitude * dx / dist;
         double fy = magnitude * dy / dist;
 
-        // update velocities according to normal force
+        // Update velocities according to normal force
         this.dx += fx / this.getMass();
         this.dy += fy / this.getMass();
         that.dx -= fx / that.getMass();
@@ -164,51 +165,51 @@ public class Particle {
         return 0.5 * this.mass * (this.dx * this.dx + this.dy * this.dy);
     }
 
-	public double getX(){
+	public double getX() {
 		return x;
 	}
 
-	public double getY(){
+	public double getY() {
 		return y;
 	}
 
-	public double getDX(){
+	public double getDX() {
 		return dx;
 	}
 
-	public double getDY(){
+	public double getDY() {
 		return dy;
 	}
 
-	public void setDX(double dx){
+	public void setDX(double dx) {
 		this.dx = dx;
 	}
 
-	public void setDY(double dy){
+	public void setDY(double dy) {
 		this.dy = dy;
 	}
 
-	public double getSize(){
+	public double getSize() {
 		return this.size;
 	}
 
-	public double getMass(){
+	public double getMass() {
 		return mass;
 	}
 
-	public void setX(double x){
+	public void setX(double x) {
 		this.x = x;
 	}
 
-	public void setY(double y){
+	public void setY(double y) {
 		this.y = y;
 	}
 
-	public void setSize(double size){
+	public void setSize(double size) {
 		this.size = size;
 	}
 
-	public void setWorld(World w){
+	public void setWorld(World w) {
 		this.world = w;
 	}
 }

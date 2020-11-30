@@ -4,25 +4,23 @@ import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-//import CollisionSystem.Event;
-
-public class World extends JPanel{
-	private final static double HZ = 0.5; //number of redraw events 
+public class World extends JPanel {
+	private final static double HZ = 0.5; // Frequency of redraw events 
 	private final static int numParticles = 100;
 	public Particle[] particles;
 	private Graphics g2 = (Graphics2D) this.getGraphics();
-    private double t  = 0.0;          // simulation clock time
+    private double t  = 0.0; // Simulation clock time
 	private Image image = null;
 
-	public World(Particle[] particles){
+	public World(Particle[] particles) {
 		this.particles = particles.clone();
 	}
 
-	public World(){
+	public World() {
 		this.particles = new Particle[numParticles];
 	}
 	
-	public void paint(Graphics g){
+	public void paint(Graphics g) {
 		int width  = getSize().width;
 		int height = getSize().height;
 		
@@ -30,8 +28,7 @@ public class World extends JPanel{
 	    	image = createImage(width, height);
 	    }
 
-	    // fill image background and spin through objects
-	    // in the world to draw them over the  background
+	    // Fill image background and spin through objects in the world to draw them over the  background
 	    image.getGraphics().fillRect(0, 0, getWidth(), getHeight());
 	    
 	    for (Particle p : this.particles) {
@@ -41,20 +38,18 @@ public class World extends JPanel{
 			p.paint(g2);
 		}
 	    
-		// take image we just created and  draw  it  onto
-	    // the frame as  a  poor  mans  double  buffering
 		g.drawImage(image, 0, 0, null);
 		
 		this.update();
 	}
 
-	public void update(){
-		for (int i = 0; i < particles.length; i++){
+	public void update() {
+		for (int i = 0; i < particles.length; i++) {
 			particles[i].update(1);
 		}
 		
-		for (int i = 0; i < particles.length; i++){
-			for (int j = 0; j < particles.length; j++){
+		for (int i = 0; i < particles.length; i++) {
+			for (int j = 0; j < particles.length; j++) {
 				
 				if (i == j) continue;
 				Particle PI = particles[i];
@@ -68,7 +63,7 @@ public class World extends JPanel{
 				//System.out.println("c1=" + center1 + "\nc2" + center2);
 				double dist = p1.distance(p2);
 				
-				if (dist < PI.getSize() / 2.0 + PJ.getSize() / 2.0){
+				if (dist < PI.getSize() / 2.0 + PJ.getSize() / 2.0) {
 					double dx = p2.getX() - p1.getX();
 					double dy = p2.getY() - p1.getY();
 					
@@ -85,37 +80,31 @@ public class World extends JPanel{
 		this.repaint();
 	}
 
-	public void addAllParticles(Particle[] p){
+	public void addAllParticles(Particle[] p) {
 		this.particles = p;
 	}
 	
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
             	World world = new World();
      	        JFrame frame = new JFrame();
      	        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-     			frame.setSize((int) (d.getWidth()+10),(int) (d.getHeight()-40));
+     			frame.setSize((int) (d.getWidth() + 10), (int) (d.getHeight() - 40));
     			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     			frame.setTitle("Particle Collision Simulation");
     			frame.setVisible(true);
-    			//frame.setBackground(Color.black);
     			world.setSize(300000, 99999);
     			world.setVisible(true);
     			
     			world.setBackground(Color.white);
 
-       	        // create n random particles
+       	        // Create n random particles
     	        int k = 0;
-    	        for (int i = 1; i <= numParticles; i++){
-    	        	int x = (int) (Math.random() * frame.getWidth()); //(int) (50+i*frame.getWidth()/15.0+ Math.random()*50-25);
-    	        	int y = (int) (Math.random() * frame.getHeight()); //(int) (50 + j*frame.getHeight()/15.0 + Math.random()*50-25);
-    	       		world.particles[k] = new Particle(
-    	       									x, 
-    	       									y, 
-    	       									Math.random() * 9000 / numParticles + 15, 
-    	       									0.8, 
-    	       									world);
+    	        for (int i = 1; i <= numParticles; i++) {
+    	        	int x = (int) (Math.random() * frame.getWidth()); 
+    	        	int y = (int) (Math.random() * frame.getHeight());
+    	       		world.particles[k] = new Particle(x, y, Math.random() * 9000 / numParticles + 15, 0.8, world);
     	       		k++;
     	        }
     			frame.add(world);
