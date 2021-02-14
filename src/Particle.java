@@ -1,5 +1,3 @@
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import java.awt.*;
 import java.util.Random;
@@ -16,10 +14,10 @@ public class Particle {
 	private final double mass;
 	private int collisionCount;
 	private String element;
-	
+
 	public Particle(double x, double y, double size, double density, World world) {
 		this.world = world;
-		g2 = (Graphics2D) world.getGraphics();
+		this.g2 = (Graphics2D) world.getGraphics();
 		this.x = x;
 		this.y = y;
 		this.size = size;
@@ -31,7 +29,7 @@ public class Particle {
 	}
 
 	public Particle(World world) {
-		this(Math.random() * world.getWidth(), 
+		this(Math.random() * world.getWidth(),
              Math.random() * world.getHeight(),
 			 20.0,
 			 0.8,
@@ -49,7 +47,7 @@ public class Particle {
 		g.setColor(c);
 
 	}
-	
+
 	// Updates the position of this particle, given the change in time since last update
 	public void update(double dt) {
 		if (this.x - this.size / 2 <= 0) {
@@ -65,12 +63,12 @@ public class Particle {
 			this.y = this.world.getHeight() - this.size / 2;
 			dy *= -1;
 		}
-		
+
 		x += dx * dt;
 		y += dy * dt;
 		paint(world.getGraphics());
 	}
-	
+
 	// Returns the number of collisions this particle has had thus far with any of the four walls
 	// or with other particles
 	public int collisionCount() {
@@ -84,7 +82,14 @@ public class Particle {
         return Math.sqrt(dx * dx + dy * dy) < this.size / 2 + other.size / 2;
     }
 
-	// Returns the time it would take for this particle to hit the given particle
+	//
+
+    /**
+     * Returns the time it would take for this Particle to hit that Particle
+     *
+     * @param that other Particle with which this Particle will collide
+     * @return the time it would take for this Particle to hit the given Particle
+     */
 	public double timeToHit(Particle that) {
 		if (this == that) return Double.POSITIVE_INFINITY;
         double dx  = that.x - this.x;
@@ -103,18 +108,26 @@ public class Particle {
         return -(dvdr + Math.sqrt(d)) / dvdv;
 	}
 
-    // Returns the time it would take for this particle to hit top or bottom wall
+    /**
+     * Returns the time for this particle to hit top or bottom wall.
+     *
+     * @return the time it would take for this particle to hit top or bottom wall
+     */
     public double timeToHitVerticalWall() {
         if (dx > 0) {
         	return (1.0 - dx - size) / dx;
         } else if (dx < 0) {
-        	return (size - dx) / dx;  
+        	return (size - dx) / dx;
         } else {
         	return Double.POSITIVE_INFINITY;
         }
     }
 
-    // Returns the time it would take for this particle to hit left or right wall
+    /**
+     * Returns the time it would take for this particle to hit left or right wall
+     *
+     * @return the time it would take for this particle to hit left or right wall
+     */
     public double timeToHitHorizontalWall() {
         if (dy > 0) {
         	return (1.0 - y - size) / dy;
@@ -133,7 +146,7 @@ public class Particle {
         double dvdr = dx*ddx + dy*ddy; // dv dot dr
 
         // Distance between particle centers at collison
-        double dist = this.size / 2.0 + that.size / 2.0; 
+        double dist = this.size / 2.0 + that.size / 2.0;
 
         // Magnitude of normal force
         double magnitude = 2 * this.mass * that.mass * dvdr / ((this.mass + that.mass) * dist);
@@ -153,13 +166,13 @@ public class Particle {
         that.collisionCount++;
     }
 
-    // Updates the velocity of this particle upon collision with either top or bottom wall 
+    // Updates the velocity of this particle upon collision with either top or bottom wall
     public void bounceOffVerticalWall() {
         this.dx *= -1;
         this.collisionCount++;
     }
 
-    // Updates the velocity of this particle upon collision with either left or right wall 
+    // Updates the velocity of this particle upon collision with either left or right wall
     public void bounceOffHorizontalWall() {
         this.dy *= -1;
         this.collisionCount++;
