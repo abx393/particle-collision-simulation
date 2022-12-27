@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 
 public class World extends JPanel {
 	private final static double HZ = 0.5; // Frequency of redraw events
-	private final static int NUM_PARTICLES = 100;
+	private final static int NUM_PARTICLES = 50;
     private final static double PARTICLE_DENSITY = 0.8;
 
 	private Particle[] particles;
