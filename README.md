@@ -1,6 +1,8 @@
 # particle-collision-simulation
 A physics simulation of elastic collisions between particles of varying masses.
 
+![Animation](assets/Animation.gif)
+
 ## Try it out
 1. Open a terminal and clone the repository: `git clone
    https://github.com/abx393/particle-collision-simulation.git`.
