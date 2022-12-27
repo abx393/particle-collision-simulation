@@ -14,5 +14,5 @@ $ cd particle-collision-simulation/src
 ```
 3. Assuming you have Java installed and have added your JDK directory to your user environment Path variable, compile and run World.java: 
 ```
-javac World.java; java World; rm *.class
+$ javac World.java; java World; rm *.class
 ```
